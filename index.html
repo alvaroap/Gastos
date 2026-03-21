@@ -30,21 +30,21 @@
 
   /* — Color palette — */
   --white:         #ffffff;
-  --grey-50:       #f7f7f6;
-  --grey-100:      #f0efed;
-  --grey-200:      #e4e3e0;
-  --grey-300:      #cccbc7;
-  --grey-400:      #a8a7a3;
-  --grey-500:      #7d7c79;
-  --grey-600:      #57564f;
-  --grey-900:      #1a1917;
+  --grey-50:       #f5f3ee;
+  --grey-100:      #ece9e2;
+  --grey-200:      #edebe6;
+  --grey-300:      #d8d5ce;
+  --grey-400:      #b8b4ac;
+  --grey-500:      #6e6a65;
+  --grey-600:      #484440;
+  --grey-900:      #1e1c1a;
 
   --ink:           var(--grey-900);
   --ink-muted:     var(--grey-600);
   --ink-faint:     var(--grey-500);
 
   /* — Semantic colors — */
-  --accent-green:  #16a34a;
+  --accent-green:  #38b820;
   --accent-red:    #dc2626;
   --accent-blue:   #2563eb;
 
@@ -124,6 +124,15 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
 /* ============================================================
    APP SHELL
    ============================================================ */
+/* Wrapper centrado desktop */
+.app-wrapper {
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 100dvh;
+  box-shadow: 0 0 0 1px var(--border);
+  position: relative;
+}
 .app-shell { display: flex; flex-direction: column; min-height: 100dvh; }
 
 /* ============================================================
@@ -242,7 +251,6 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
   min-height: 100%;
 }
 @media (min-width: 560px)  { .months-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1024px) { .months-grid { grid-template-columns: repeat(3, 1fr); } }
 
 .month-card {
   border: 1px solid var(--border);
@@ -291,7 +299,7 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
 .mc-stats { display: flex; flex-direction: column; gap: var(--sp-2); }
 .mc-stat-row { display: flex; align-items: center; justify-content: space-between; }
 .mc-stat-lbl { font-size: var(--text-xs); color: var(--ink-muted); }
-.mc-stat-val { font-size: var(--text-base); }
+.mc-stat-val { font-size: var(--text-base); font-weight: var(--fw-bold); }
 .mc-stat-val.pos { color: var(--accent-green); }
 .mc-stat-val.neg { color: var(--accent-red); }
 .mc-stat-val.neu { color: var(--ink-faint); }
@@ -408,7 +416,6 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
 .bank-section {
   display: flex; align-items: center; gap: var(--sp-3);
   padding: var(--sp-3) var(--sp-5);
-  background: var(--grey-200);
   border-bottom: 1px solid var(--border-strong);
   border-top: 1px solid var(--border-strong);
   margin-top: var(--sp-2);
@@ -521,7 +528,8 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
    BOTTOM NAV (mobile only)
    ============================================================ */
 .bottom-nav {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  position: fixed; bottom: 0; z-index: 200;
+  width: 100%; max-width: 980px;
   height: calc(var(--bnav-h) + var(--safe-bottom));
   padding-bottom: var(--safe-bottom);
   background: var(--white); border-top: 1px solid var(--border);
@@ -601,6 +609,7 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
 </head>
 <body>
 
+<div class="app-wrapper">
 <div class="app-shell">
 
   <!-- TOP BAR -->
@@ -1049,7 +1058,10 @@ function renderMonthDetail(mid) {
   document.getElementById('colchonInput').value = S.colchon ?? 800;
   updateKPIs(mid);
 
-  // Estructura canónica banco → categorías ordenadas
+  const BANK_STYLE = {
+    caixa: { bg: '#d8d5ce', dot: '#2c2a28', border: '#b8b4ac' },
+    bbva:  { bg: '#d8d5ce', dot: '#2c2a28', border: '#b8b4ac' },
+  };
   const STRUCTURE = {
     caixa: [
       { cat: 'casa',    label: 'Casa'    },
@@ -1068,15 +1080,17 @@ function renderMonthDetail(mid) {
   list.innerHTML = '';
 
   ['caixa', 'bbva'].forEach(bank => {
-    const bTotal = bankTotal(bank, mid);
-    const bLabel = bank === 'caixa' ? 'La Caixa' : 'BBVA';
-    const bColor = bank === 'caixa' ? 'var(--caixa-color)' : 'var(--bbva-color)';
+    const bTotal  = bankTotal(bank, mid);
+    const bLabel  = bank === 'caixa' ? 'La Caixa' : 'BBVA';
+    const bStyle  = BANK_STYLE[bank];
 
     // — Banco header —
     const sec = document.createElement('div');
     sec.className = 'bank-section';
+    sec.style.background   = bStyle.bg;
+    sec.style.borderColor  = bStyle.border;
     sec.innerHTML = `
-      <div class="bank-dot" style="background:${bColor}"></div>
+      <div class="bank-dot" style="background:${bStyle.dot}"></div>
       <span class="bank-section-lbl">${bLabel}</span>
       <span class="bank-section-total" id="bsec-${bank}-${mid}">${fmtN(bTotal)}</span>`;
     list.appendChild(sec);
@@ -1281,5 +1295,6 @@ buildSidebar();
 renderOverview();
 document.getElementById('topbarYear').textContent = new Date().getFullYear();
 </script>
+</div><!-- /app-wrapper -->
 </body>
 </html>
