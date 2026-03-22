@@ -267,16 +267,16 @@ input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
   border-bottom: 1px solid #0fc3e8;
   background: none;
 }
-.mc-name { font-size: var(--text-base); letter-spacing: -0.01em; }
+.mc-name { font-size: var(--text-md); letter-spacing: -0.01em; }
 .mc-range { font-size: var(--text-xs); color: var(--ink-faint); margin-top: 2px; }
-.mc-total-lbl { font-size: var(--text-xs); color: #000; text-align: right; margin-bottom: 2px; }
+.mc-total-lbl { font-size: var(--text-xs); color: var(--ink-faint); text-align: right; margin-bottom: 2px; }
 .mc-total-val { font-size: var(--text-md); font-weight: var(--fw-bold); text-align: right; }
 
 .mc-body { padding: var(--sp-4) var(--sp-5); display: flex; flex-direction: column; gap: var(--sp-3); }
 
 .mc-nomina-lbl {
   font-size: var(--text-xs); color: var(--ink-faint);
-  letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
   margin-bottom: var(--sp-1); display: block;
 }
 .mc-nomina-wrap {
@@ -1001,7 +1001,7 @@ function renderOverview() {
     return `
     <div class="month-card">
       <div class="mc-header">
-        <div><div class="mc-name">${m.name}</div><div class="mc-range">${m.range}</div></div>
+        <div><div class="mc-name">${m.name}</div></div>
         <div><div class="mc-total-lbl">Total gastos</div><div class="mc-total-val">${fmtN(total)}</div></div>
       </div>
       <div class="mc-body">
@@ -1016,12 +1016,12 @@ function renderOverview() {
         </div>
         <div class="mc-stats">
           <div class="mc-stat-row">
-            <span class="mc-stat-lbl">La Caixa (gastos)</span>
+            <span class="mc-stat-lbl">La Caixa</span>
             <span class="mc-stat-val">${fmtN(caixaT)}</span>
           </div>
           <div class="mc-stat-divider"></div>
           <div class="mc-stat-row">
-            <span class="mc-stat-lbl">Ahorro / Inversión</span>
+            <span class="mc-stat-lbl">Ahorro</span>
             <span class="mc-stat-val ${iCls}" id="ov-inv-${m.id}">${iTxt}</span>
           </div>
         </div>
